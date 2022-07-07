@@ -55,7 +55,8 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 
-app.use((req, res, next) =>{
+app.use((req, res, next) =>{ // this function allows us to add the .locals parameter to the res object so that ALL responses hold parameters that can be used by ejs, flash, etc.
+    res.locals.currentUser = req.user   //.user is a method automatically added to req by passport, and holds the deserialized user info like email and username; setting local.currentUser to req.user allows the the ejs templates to determine if the user is logged in (true) or not logged in (false), and populate the login or logout buttons accordingly (see navbar.ejs)
     res.locals.success = req.flash("success")
     res.locals.error = req.flash("error")
     next()
