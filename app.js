@@ -64,7 +64,7 @@ app.use((req, res, next) =>{
 
 app.use("/campgrounds", campgroundsRouter)
 app.use('/campgrounds/:id/reviews', reviewsRouter)
-app.use('/register', userRouter)
+app.use('/', userRouter) //user / route because userRouter contains more than one endpoint; if endpoint is specified on this file, it will always go to the first endpoint on the router
 //--------------------------------------------------------------------
 
 app.get("/", (req, res) => {
