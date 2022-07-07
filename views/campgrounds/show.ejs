@@ -31,12 +31,11 @@
         </form>
       </div>
       <%}%>
-
-
     </div>
   </div>
 
   <div class="col-6">
+    <%if(currentUser){%>
     <form
       action="/campgrounds/<%=campground._id%>/reviews"
       method="POST"
@@ -68,11 +67,15 @@
       </div>
       <button class="btn btn-success">Submit</button>
     </form>
-    <%for (let review of campground.reviews){%>
+
+    <%}%> <%for (let review of campground.reviews){%>
     <div class="mb-3 card">
       <div class="card-body">
         <h5 class="card-title">Rating: <%=review.rating%></h5>
+        <p class="card-text text-muted"><%=review.author.username%></p>
         <p class="card-text">Review: <%=review.body%></p>
+
+        <%if(currentUser && review.author.equals(currentUser._id)){%>
         <form
           class="d-inline"
           action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
@@ -80,6 +83,7 @@
         >
           <button class="btn btn-sm btn-danger">Delete</button>
         </form>
+        <%}%>
       </div>
     </div>
     <%}%>
