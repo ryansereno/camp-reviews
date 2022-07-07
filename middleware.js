@@ -1,6 +1,7 @@
 const Campground = require("./models/campground");
 const { campgroundSchema, reviewSchema } = require("./joiSchemas.js");
 const ExpressError = require("./utils/ExpressError");
+const Review = require("./models/review");
 
 module.exports.isLoggedIn = (req,res,next)=>{
     console.log('Req.user...', req.user)
@@ -39,6 +40,18 @@ module.exports.validateReview = (req, res, next) => {
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+
+module.exports.isReviewAuthor = async (req, res, next) => {
+  const { reviewId } = req.params;
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(req.user._id)) {
+    req.flash("error", "Must be author to edit");
+    return res.redirect(`/campgrounds/${id}`);
   } else {
     next();
   }

@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true }); //must merge parameters ot
 const catchAsync = require("../utils/catchAsync");
 const ExpressError = require("../utils/ExpressError");
 const Campground = require("../models/campground");
-const { validateReview, isLoggedIn, isAuthor } = require("../middleware");
+const { isReviewAuthor, validateReview, isLoggedIn, isAuthor } = require("../middleware");
 const Review = require("../models/review");
     isLoggedIn,
 router.post(
@@ -26,7 +26,7 @@ router.post(
 router.delete(
   "/:reviewId",
   isLoggedIn,
-    isAuthor,
+    isReviewAuthor,
   catchAsync(async (req, res, next) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } }); //pull operator removes the review id from the campground record; even if the review record is deleted, its id must also be separately deleted from the campground record
