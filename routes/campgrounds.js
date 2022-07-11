@@ -4,18 +4,23 @@ const catchAsync = require("../utils/catchAsync");
 const Campground = require("../models/campground");
 const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 const campgroundController = require("../controllers/campgrounds");
+const multer = require("multer")
+const upload = multer({dest: '../uploads/'})
 
 router
   .route("/")
   .get(catchAsync(campgroundController.index)) // do not add () to controller; it will cause the function to execute on its own; let the router execute the function
-  .post(
-    isLoggedIn,
-    isAuthor,
-    validateCampground,
-    catchAsync(campgroundController.postNewcamp)
-  );
+//  .post(
+    //isLoggedIn,
+    //isAuthor,
+    //validateCampground,
+    //catchAsync(campgroundController.postNewcamp)
+  //);
+    .post(upload.array('image'),(req,res) =>{
+        res.send(req.body)
+    })
 
-router.get("/new", isLoggedIn, catchAsync(campgroundController.newcamp));
+router.get("/new", isLoggedIn, catchAsync(campgroundController.getNewcamp));
 
 router
   .route("/:id")
