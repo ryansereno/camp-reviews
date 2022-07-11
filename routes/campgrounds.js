@@ -4,6 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const Campground = require("../models/campground");
 const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 const campgroundController = require("../controllers/campgrounds");
+
 router
   .route("/")
   .get(catchAsync(campgroundController.index)) // do not add () to controller; it will cause the function to execute on its own; let the router execute the function

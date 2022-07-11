@@ -1,3 +1,4 @@
+const Campground = require("../models/campground")
 const Review = require("../models/review");
 
 module.exports.postReview = async (req, res, next) => {
