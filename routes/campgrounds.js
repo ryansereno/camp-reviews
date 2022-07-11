@@ -5,7 +5,8 @@ const Campground = require("../models/campground");
 const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 const campgroundController = require("../controllers/campgrounds");
 const multer = require("multer")
-const upload = multer({dest: '../uploads/'})
+const {storage} = require('../cloudinary')
+const upload = multer({storage})
 
 router
   .route("/")
@@ -17,7 +18,8 @@ router
     //catchAsync(campgroundController.postNewcamp)
   //);
     .post(upload.array('image'),(req,res) =>{
-        res.send(req.body)
+        console.log(req.files)
+        res.send('uploaded')
     })
 
 router.get("/new", isLoggedIn, catchAsync(campgroundController.getNewcamp));
