@@ -4,6 +4,10 @@ const Schema = mongoose.Schema;
 const User = require('../models/user')
 
 const CampgroundSchema = new Schema({
+    images:[{
+        url: String,
+        filename: String
+    }],
     name: {
         type: String,
     },

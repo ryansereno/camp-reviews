@@ -6,13 +6,15 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.getNewcamp = async (req, res) => {
-  //check colt
   res.render("campgrounds/new");
 };
 
 module.exports.postNewcamp = async (req, res, next) => {
-  //if (!req.body.campground) throw new ExpressError('Invalid campground data', 400)
   const campground = new Campground(req.body.campground); //req.body will be empty. Must router.use express URLencoded, above
+  campground.images = req.files.map((file) => ({
+    url: file.path,
+    filename: file.filename,
+  }));
   campground.author = req.user._id;
   await campground.save();
   req.flash("success", "New campground successfully made");
@@ -29,6 +31,7 @@ module.exports.getCampId = async (req, res, next) => {
       },
     }) //populate all reviews on campsite, then populate the author on EACH review
     .populate("author");
+    console.log(campground)
   if (!campground) {
     req.flash("error", "This campground has been deleted");
     return res.redirect("/campgrounds");
