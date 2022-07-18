@@ -1,4 +1,5 @@
 const Campground = require("../models/campground");
+const {cloudinary} = require("../cloudinary")
 
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find({});
@@ -31,7 +32,7 @@ module.exports.getCampId = async (req, res, next) => {
       },
     }) //populate all reviews on campsite, then populate the author on EACH review
     .populate("author");
-    console.log(campground)
+  console.log(campground.images);
   if (!campground) {
     req.flash("error", "This campground has been deleted");
     return res.redirect("/campgrounds");
@@ -51,10 +52,24 @@ module.exports.getCampEdit = async (req, res, next) => {
 
 module.exports.putCampEdit = async (req, res, next) => {
   const { id } = req.params;
+  console.log(req.body);
   const campground = await Campground.findByIdAndUpdate(id, {
     ...req.body.campground,
   });
-
+  const images = req.files.map((file) => ({
+    url: file.path,
+    filename: file.filename,
+  }));
+  campground.images.push(...images);
+  await campground.save();
+  if (req.body.deleteImages) {
+      for (let filename of req.body.deleteImages){
+          await cloudinary.uploader.destroy(filename)
+      }
+    await campground.updateOne({
+      $pull: { images: { filename: { $in: req.body.deleteImages } } },
+    });
+  }
   req.flash("success", "Campground successfully edited");
   res.redirect(`/campgrounds/${campground._id}`);
 };

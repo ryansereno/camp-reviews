@@ -13,7 +13,7 @@ router
   .get(catchAsync(campgroundController.index)) // do not add () to controller; it will cause the function to execute on its own; let the router execute the function
   .post(
     isLoggedIn,
-      upload.array('image'),
+    upload.array("image"),
     validateCampground,
     catchAsync(campgroundController.postNewcamp)
   );
@@ -26,6 +26,7 @@ router
   .put(
     isLoggedIn,
     isAuthor,
+    upload.array("image"),
     validateCampground,
     catchAsync(campgroundController.putCampEdit)
   )
