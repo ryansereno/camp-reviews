@@ -34,13 +34,9 @@ const seedDB = async () => {
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       images: [
         {
-          url: "https://res.cloudinary.com/da4w19b6p/image/upload/v1657990458/CampReview/umvtdaptagll6gqngech.jpg",
-          filename: "CampReview/umvtdaptagll6gqngech",
-        },
-        {
-          url: "https://res.cloudinary.com/da4w19b6p/image/upload/v1657990457/CampReview/sufe9udyipk3rxu1ukxx.png",
-          filename: "CampReview/sufe9udyipk3rxu1ukxx",
-        },
+          url:"https://res.cloudinary.com/da4w19b6p/image/upload/v1657990457/CampReview/sufe9udyipk3rxu1ukxx.png",
+            filenamee: "CampReview/sufe9udyipk3rxu1ukxx",
+        }
       ],
       description:
         "Elit harum dolor quod quae earum Dolor quis ipsam corporis facere consectetur soluta. Et fuga tempore dolore laudantium est praesentium maxime minus! Voluptatem sequi possimus magni numquam quos eius, est",
