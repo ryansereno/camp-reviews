@@ -18,7 +18,10 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const userRouter = require('./routes/user')
-mongoose.connect("mongodb://localhost:27017/yelp-camp", {
+const dbUrl = process.env.DB_URL
+
+mongoose.connect("mongodb://localhost:27017/yelp-camp"
+, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

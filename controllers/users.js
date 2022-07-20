@@ -1,3 +1,5 @@
+const User = require("../models/user")
+
 module.exports.renderRegister = (req, res) => {
   res.render("users/register");
 }
@@ -5,6 +7,7 @@ module.exports.renderRegister = (req, res) => {
 module.exports.register = async (req, res, next) => {
     try {
       const { email, username, password } = req.body;
+        console.log(req.body)
       const user = new User({ email: email, username: username });
       const registeredUser = await User.register(user, password);
       req.login(registeredUser, (err) => {
@@ -13,6 +16,8 @@ module.exports.register = async (req, res, next) => {
         res.redirect("/campgrounds");
       });
     } catch (e) {
+
+            console.log(e)
       // handles error if duplicate user; error message is given by passportLocalMongoose
       req.flash("error", e.message);
       res.redirect("/register");
