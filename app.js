@@ -18,9 +18,10 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const userRouter = require('./routes/user')
-const dbUrl = process.env.DB_URL
-
-mongoose.connect("mongodb://localhost:27017/yelp-camp"
+const MongoDBStore = require("connect-mongo")(session)
+//const dbUrl = process.env.DB_URL
+const dbUrl = "mongodb://localhost:27017/yelp-camp"
+mongoose.connect( dbUrl
 , {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -40,7 +41,19 @@ app.set("views", path.join(__dirname, "views")); //provides absolute path to avo
 app.use(express.urlencoded({ extended: true })); //parses request body, so body or params can be used as variables
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")))
+
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret: 'storeprivatekey',
+    touchAfter: 24 * 3600
+})
+
+store.on("error", function(e){
+    console.log("Session store error", e)
+})
+
 const sessionConfig ={
+    store: store,
     secret: 'privateKey',
     resave: false,
     saveUninitialized: true,
@@ -51,6 +64,7 @@ const sessionConfig ={
     }
 }
 app.use(session(sessionConfig))
+
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
